@@ -1,0 +1,29 @@
+---
+description: Code standards and Vue.js best practices
+globs: ["*.vue", "*.js"]
+alwaysApply: true
+---
+
+## Vue.js Best Practices
+- Use Composition API exclusively with `<script setup>` syntax
+- Use `ref()` and `reactive()` for state management
+- Use `computed()` for derived state
+- Use `onMounted`, `onUnmounted` etc. for lifecycle hooks
+- Use PascalCase for component names
+
+## Code Quality
+- Remove unnecessary comments - only explain why, not what
+- Suggest improvements for repetitive or unclear code
+- Follow DRY principle - eliminate code duplication
+- Use camelCase for variables/functions, PascalCase for components, kebab-case for files
+
+## File Structure
+- Keep components in `/src/components/`
+- Keep pages in `/src/pages/`
+- Keep services in `/src/services/`
+- Keep models in `/src/models/`
+- Keep router config in `/src/router/`
+
+## No Emojis Policy
+- Never use emojis in code, comments, or documentation
+- Maintain professional communication

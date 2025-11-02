@@ -1,0 +1,30 @@
+---
+description: Development practices including error handling, security, testing and workflow
+globs: ["*.vue", "*.js"]
+alwaysApply: false
+---
+
+## Error Handling
+- Suggest proper error handling for async operations
+- Provide meaningful user feedback
+- Use appropriate logging levels
+
+## Security
+- Validate all user inputs
+- Prevent XSS attacks
+- Never expose sensitive API keys
+
+## Testing
+- Suggest unit tests for utility functions
+- Recommend component and integration tests
+- Test critical user flows
+
+## Git Best Practices
+- Write descriptive commit messages in English
+- Keep commits atomic and focused
+- Use descriptive branch names (feature/, bugfix/, refactor/)
+
+## Development Workflow
+- Suggest code improvements during reviews
+- Update documentation when adding features
+- Keep dependencies updated and remove unused packages

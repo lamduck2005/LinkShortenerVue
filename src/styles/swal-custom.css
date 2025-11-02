@@ -1,0 +1,32 @@
+/* Override animation cho toast khi hiển thị */
+.swal2-toast.custom-toast-animation.swal2-show {
+  animation: slideInFromTop 0.3s ease-out !important;
+}
+
+/* Override animation cho toast khi ẩn */
+.swal2-toast.custom-toast-animation.swal2-hide {
+  animation: slideOutToTop 0.3s ease-in !important;
+}
+
+/* Animation keyframes */
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToTop {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}

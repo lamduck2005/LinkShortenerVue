@@ -7,4 +7,5 @@ import AppLayout from './layout/AppLayout.vue';
   <AppLayout></AppLayout>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -1,0 +1,21 @@
+---
+description: Web standards including styling, accessibility and performance
+globs: ["*.vue", "*.css", "*.scss"]
+alwaysApply: false
+---
+
+## Styling Rules
+- Prefer CSS classes over inline styles
+- Use CSS variables for reusable values
+- Group related styles logically
+- Consider responsive design with mobile-first approach
+
+## Accessibility
+- Use semantic HTML elements
+- Add ARIA labels where needed
+- Ensure keyboard navigation support
+
+## Performance
+- Suggest lazy loading when appropriate
+- Recommend code splitting opportunities
+- Optimize images and bundles
