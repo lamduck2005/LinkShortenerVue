@@ -1,4 +1,5 @@
 import { TEXT_PREVIEW_LIMIT } from '@/constants'; // Import giới hạn
+import { toast } from '@/services/alertService';
 
 /**
  * Chuyển đổi chuỗi ISO (Instant) sang định dạng ngày giờ địa phương (vi-VN).
@@ -33,8 +34,10 @@ export const copyToClipboard = async (textToCopy) => {
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
+            toast('success', 'Đã sao chép vào clipboard!');
             return true;
         } catch (err) {
+            toast('error', 'Sao chép thất bại!');
             return false;
         }
     }
@@ -42,8 +45,10 @@ export const copyToClipboard = async (textToCopy) => {
     // Cách hiện đại (cho https)
     try {
         await navigator.clipboard.writeText(textToCopy);
+        toast('success', 'Đã sao chép vào clipboard!');
         return true;
     } catch (err) {
+        toast('error', 'Sao chép thất bại!');
         return false;
     }
 };
