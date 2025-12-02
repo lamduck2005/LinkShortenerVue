@@ -9,6 +9,38 @@ const router = createRouter({
       component: () => import('../pages/HomePage.vue'),
     },
     {
+      path: '/admin',
+      component: () => import('../pages/admin/AdminLayout.vue'),
+      //childen sẽ hiện trong routerview của AdminLayout.vue
+      children: [
+        {
+          path: '',
+          name: 'admin',
+          component: () => import('../pages/admin/AdminDashboardPage.vue'),
+        },
+        {
+          path: 'users',
+          name: 'admin-users',
+          component: () => import('../pages/admin/AdminUsersPage.vue'),
+        },
+      ],
+    },
+    {
+      path: '/me',
+      name: 'profile',
+      component: () => import('../pages/ProfilePage.vue'),
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../pages/LoginPage.vue'),
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../pages/SignupPage.vue'),
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../pages/AboutPage.vue'),

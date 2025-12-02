@@ -7,37 +7,32 @@ const api = axios.create({
   baseURL: baseUrl
 });
 
+// === CẤU HÌNH INTERCEPTOR REQUEST (GẮN JWT NẾU CÓ) ===
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // === CẤU HÌNH INTERCEPTOR (XỬ LÝ LỖI TẬP TRUNG) ===
 api.interceptors.response.use(
-  
-  /**
-   * onFulfilled (Hàm chạy khi Backend trả về 2xx - Thành công)
-   * * Nó nhận response gốc và bọc lại thành cấu trúc chuẩn của
-   * frontend.
-   */
   (response) => {
     return {
       success: true,
-      data: response.data 
-      // response.data là JSON { id, shortUrl, ... }
+      data: response.data
     };
   },
-  
-  /**
-   * onRejected (Hàm chạy khi Backend trả về 4xx, 5xx - Lỗi)
-   * * Nó "bắt" (catch) lỗi mà Axios ném ra, và bọc nó
-   * lại thành một response thành công (để await không bị văng lỗi)
-   * nhưng mang cờ "success: false".
-   */
   (error) => {
-    return Promise.resolve({ // Dùng Promise.resolve để component không bị crash
+    return Promise.resolve({
       success: false,
-      error: error.response?.data || { 
-        status: 503, 
-        error: "Service Unavailable", 
-        message: "Không thể kết nối tới máy chủ hoặc máy chủ không phản hồi." 
+      error: error.response?.data || {
+        status: 503,
+        error: "Service Unavailable",
+        message: "Không thể kết nối tới máy chủ hoặc máy chủ không phản hồi."
       }
-      // error.response.data là JSON { timestamp, status, error, ... }
     });
   }
 );
