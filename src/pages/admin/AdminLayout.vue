@@ -26,6 +26,13 @@
           >
             Quản lý người dùng
           </RouterLink>
+          <RouterLink
+            to="/admin/snippets"
+            class="list-group-item list-group-item-action"
+            active-class="active"
+          >
+            Quản lý snippet
+          </RouterLink>
           <!-- Sau này có thể thêm các mục khác như /admin/snippets, /admin/settings, ... -->
         </div>
       </div>

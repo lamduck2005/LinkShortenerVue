@@ -23,6 +23,11 @@ const router = createRouter({
           name: 'admin-users',
           component: () => import('../pages/admin/AdminUsersPage.vue'),
         },
+        {
+          path: 'snippets',
+          name: 'admin-snippets',
+          component: () => import('../pages/admin/AdminSnippetsPage.vue'),
+        },
       ],
     },
     {
