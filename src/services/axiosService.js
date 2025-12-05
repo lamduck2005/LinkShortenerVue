@@ -34,6 +34,7 @@ class ErrorResponse {
 
 import router from '@/router';
 import axios from 'axios';
+import authService from './authService';
 
 const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:8080';
 
@@ -61,6 +62,7 @@ api.interceptors.response.use(
     const errorResponse = ErrorResponse.fromAxiosError(error);
 
     if (errorResponse.status === 401 && !window.location.pathname.includes('/login')) {
+      authService.logout();
       router.push({ name: 'login' });
     }
 
