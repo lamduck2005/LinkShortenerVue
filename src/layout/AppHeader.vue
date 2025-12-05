@@ -76,6 +76,6 @@ const handleLogout = async () => {
   }
   authService.logout();
   toast('success', 'Đã đăng xuất');
-  router.push('/');
+  router.push({name: 'login'});
 };
 </script>

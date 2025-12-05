@@ -30,7 +30,7 @@
               <label for="customCode" class="form-label">Mã tùy chỉnh (Tùy chọn):</label>
               <div class="input-group">
                 <!-- <span class="input-group-text">website/</span> -->
-                <input v-model="formData.customCode" type="text" id="customCode" class="form-control"
+                <input v-model="formData.customCode" type="text" id="customCode" class="form-control" minlength="6" maxlength="20"
                   placeholder="link-rut-gon" />
               </div>
             </div>
@@ -179,7 +179,22 @@
     result.value = null;
 
     const payload = { ...formData.value };
-    if (payload.customCode === '') payload.customCode = null;
+    if (payload.customCode === '') {
+      payload.customCode = null;
+    } else if (payload.customCode) {
+      const trimmedCode = payload.customCode.trim();
+      const customCodeRegex = /^[A-Za-z0-9_-]{6,20}$/;
+      const isValidCode = customCodeRegex.test(trimmedCode);
+      if (!isValidCode) {
+        showError(
+          'Mã tùy chỉnh không hợp lệ',
+          'Chỉ cho phép chữ, số, dấu gạch ngang hoặc gạch dưới, độ dài 6-20, không chứa khoảng trắng.'
+        );
+        isLoading.value = false;
+        return;
+      }
+      payload.customCode = trimmedCode;
+    }
     if (payload.password === '') payload.password = null;
 
     if (payload.type === 'URL' && payload.content.length > URL_MAX_LENGTH) {

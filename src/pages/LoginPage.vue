@@ -6,6 +6,7 @@
           <h2 class="mb-4 text-center">Đăng nhập</h2>
 
           <form @submit.prevent="handleSubmit">
+            
             <div class="mb-3">
               <label for="username" class="form-label">Tên đăng nhập</label>
               <input
@@ -31,6 +32,14 @@
                   <EyeIcon v-if="passwordFieldType === 'password'" class="hero-icon" />
                   <EyeSlashIcon v-else class="hero-icon" />
                 </button>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex align-items-center justify-content-between gap-2 flex-wrap">
+              <span class="fw-semibold">Tài khoản mặc định:</span>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-success" @click="fillDefaultAccount('admin')">Quản trị viên</button>
+                <button type="button" class="btn btn-success" @click="fillDefaultAccount('user')">Người dùng</button>
               </div>
             </div>
 
@@ -94,6 +103,11 @@ const handleSubmit = async () => {
   }
 
   isLoading.value = false;
+};
+
+const fillDefaultAccount = (accountType) => {
+  formData.value.username = accountType === 'admin' ? 'admin' : 'user';
+  formData.value.password = '123456';
 };
 </script>
 
