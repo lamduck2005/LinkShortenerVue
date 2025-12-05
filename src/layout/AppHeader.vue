@@ -21,24 +21,29 @@
           <li v-if="isAuthenticated" class="nav-item">
             <RouterLink class="nav-link" to="/me">Thông tin cá nhân</RouterLink>
           </li>
+          <li v-if="isAdmin" class="nav-item">
+            <RouterLink class="nav-link" to="/admin">Trang quản trị</RouterLink>
+          </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/about">Giới thiệu</RouterLink>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto align-items-center">
-          <li v-if="!isAuthenticated" class="nav-item me-2">
-            <RouterLink class="btn btn-outline-primary btn-sm" to="/login">Đăng nhập</RouterLink>
-          </li>
           <li v-if="!isAuthenticated" class="nav-item">
-            <RouterLink class="btn btn-primary btn-sm" to="/signup">Đăng ký</RouterLink>
+            <div class="d-flex gap-2 flex-wrap">
+              <RouterLink class="btn btn-outline-primary btn-sm" to="/login">Đăng nhập</RouterLink>
+              <RouterLink class="btn btn-primary btn-sm" to="/signup">Đăng ký</RouterLink>
+            </div>
           </li>
-          <li v-else class="nav-item d-flex align-items-center">
-            <span class="navbar-text me-2">
-              Xin chào, <strong>{{ username }}</strong>
-            </span>
-            <button class="btn btn-outline-danger btn-sm" type="button" @click="handleLogout">
-              Đăng xuất
-            </button>
+          <li v-else class="nav-item">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span class="navbar-text d-none d-md-inline">
+                Xin chào, <strong>{{ username }}</strong>
+              </span>
+              <button class="btn btn-outline-danger btn-sm" type="button" @click="handleLogout">
+                Đăng xuất
+              </button>
+            </div>
           </li>
         </ul>
       </div>
@@ -55,7 +60,14 @@ import { toast, confirmAction } from '@/services/alertService';
 const router = useRouter();
 
 const isAuthenticated = computed(() => authService.isAuthenticated.value);
-const username = computed(() => authService.getUsernameFromToken() || 'User');
+const username = computed(() => {
+  isAuthenticated.value;
+  return authService.getUsername() || 'User';
+});
+const isAdmin = computed(() => {
+  isAuthenticated.value;
+  return authService.isAdmin();
+});
 
 const handleLogout = async () => {
   const confirmed = await confirmAction('Xác nhận đăng xuất', 'Bạn có chắc chắn muốn đăng xuất?');

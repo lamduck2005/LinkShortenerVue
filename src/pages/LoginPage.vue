@@ -19,13 +19,19 @@
 
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu</label>
-              <input
-                v-model="formData.password"
-                type="password"
-                id="password"
-                class="form-control"
-                required
-              />
+              <div class="input-group">
+                <input
+                  v-model="formData.password"
+                  :type="passwordFieldType"
+                  id="password"
+                  class="form-control"
+                  required
+                />
+                <button class="btn btn-outline-secondary" type="button" @click="togglePasswordVisibility">
+                  <EyeIcon v-if="passwordFieldType === 'password'" class="hero-icon" />
+                  <EyeSlashIcon v-else class="hero-icon" />
+                </button>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-primary w-100" :disabled="isLoading">
@@ -51,6 +57,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
 import { showError, toast } from '@/services/alertService';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
 
@@ -60,6 +67,11 @@ const formData = ref({
 });
 
 const isLoading = ref(false);
+const passwordFieldType = ref('password');
+
+const togglePasswordVisibility = () => {
+  passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
+};
 
 const handleSubmit = async () => {
   isLoading.value = true;
@@ -68,13 +80,11 @@ const handleSubmit = async () => {
 
   if (response.success) {
     const token = response.data.token;
-    const roles = response.data.roles || [];
 
     authService.setToken(token);
     toast('success', 'Đăng nhập thành công!');
 
-    const isAdmin = Array.isArray(roles) && roles.includes('ROLE_ADMIN');
-    if (isAdmin) {
+    if (authService.isAdmin()) {
       router.push('/admin');
     } else {
       router.push('/');

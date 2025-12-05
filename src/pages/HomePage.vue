@@ -29,9 +29,9 @@
             <div class="mb-3">
               <label for="customCode" class="form-label">Mã tùy chỉnh (Tùy chọn):</label>
               <div class="input-group">
-                <span class="input-group-text">{{ baseUrl }}/</span>
+                <!-- <span class="input-group-text">website/</span> -->
                 <input v-model="formData.customCode" type="text" id="customCode" class="form-control"
-                  placeholder="su-kien-cua-toi" />
+                  placeholder="link-rut-gon" />
               </div>
             </div>
 
@@ -149,7 +149,6 @@
   const formData = ref(newSnippetRequest());
   const isLoading = ref(false);
   const result = ref(null);
-  const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:8080';
 
   const flatpickrConfig = ref({
     enableTime: true,

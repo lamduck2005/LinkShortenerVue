@@ -13,7 +13,7 @@
               v-model="filters.userId"
               type="number"
               class="form-control"
-              placeholder="Lọc theo ownerId"
+              placeholder="Lọc theo id người dùng"
             />
           </div>
           <div class="col-md-3">
@@ -75,7 +75,7 @@
                 <th scope="col">Lượt click</th>
                 <th scope="col">Hết hạn</th>
                 <th scope="col">Trạng thái</th>
-                <th scope="col">Owner</th>
+                <th scope="col">Người tạo</th>
                 <th scope="col">Ngày tạo</th>
                 <th scope="col" class="text-end">Thao tác</th>
               </tr>
@@ -239,7 +239,7 @@
                 </td>
               </tr>
               <tr>
-                <th class="text-muted fw-semibold">Owner</th>
+                <th class="text-muted fw-semibold">Người tạo</th>
                 <td>
                   <div><strong>{{ detailSnippet.ownerUsername }}</strong></div>
                   <div class="text-muted">{{ detailSnippet.ownerEmail }}</div>

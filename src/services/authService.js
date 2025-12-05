@@ -47,6 +47,23 @@ const getUsernameFromToken = () => {
   return payload.sub || payload.username || null;
 };
 
+const getRolesFromToken = () => {
+  const token = getToken();
+  if (!token) return [];
+  const payload = parseJwt(token);
+  if (!payload || !payload.roles) return [];
+  return Array.isArray(payload.roles) ? payload.roles : [payload.roles];
+};
+
+const getUsername = () => {
+  return getUsernameFromToken() || null;
+};
+
+const isAdmin = () => {
+  const roles = getRolesFromToken();
+  return roles.includes('ROLE_ADMIN');
+};
+
 const signup = (payload) => {
   return api.post('/api/v1/auth/signup', payload);
 };
@@ -62,6 +79,9 @@ const authService = {
   setToken,
   getToken,
   getUsernameFromToken,
+  getRolesFromToken,
+  getUsername,
+  isAdmin,
   isAuthenticated,
 };
 
