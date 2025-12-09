@@ -65,7 +65,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
-import { showError, toast } from '@/services/alertService';
+import { showError, showToast } from '@/services/alertService';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
@@ -91,7 +91,7 @@ const handleSubmit = async () => {
     const token = response.data.token;
 
     authService.setToken(token);
-    toast('success', 'Đăng nhập thành công!');
+    showToast('success', 'Đăng nhập thành công!');
 
     if (authService.isAdmin()) {
       router.push('/admin');

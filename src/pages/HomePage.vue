@@ -131,7 +131,7 @@
 
   import { newSnippetRequest } from '@/models/snippet.model';
   import snippetService from '@/services/snippetService';
-  import { showError, toast } from '@/services/alertService';
+  import { showError, showToast } from '@/services/alertService';
 
   import FlatPickr from 'vue-flatpickr-component';
 
@@ -217,7 +217,7 @@
       formData.value.password = '';
       formData.value.expiresAt = null;
 
-      toast('success', "Tạo liên kết thành công!");
+      showToast('success', "Tạo liên kết thành công!");
     } else {
       showError(response.error.error || 'Tạo thất bại', response.error.message);
     }

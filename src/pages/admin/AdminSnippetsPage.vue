@@ -290,7 +290,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
 import adminSnippetService from '@/services/adminSnippetService';
-import { showError, confirmAction, toast, promptInput, promptDateTime } from '@/services/alertService';
+import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alertService';
 import { formatInstant } from '@/utils/utils';
 
 const router = useRouter();
@@ -407,7 +407,7 @@ const deleteSnippet = async (item) => {
   }
   const response = await adminSnippetService.deleteAdminSnippet(item.id);
   if (response.success) {
-    toast('success', 'Đã xóa snippet thành công.');
+    showToast('success', 'Đã xóa snippet thành công.');
     await loadData();
   } else {
     showError(response.error.error || 'Xóa snippet thất bại', response.error.message);
@@ -431,7 +431,7 @@ const changePassword = async (item) => {
   const response = await adminSnippetService.updateAdminSnippetPassword(item.id, newPassword);
 
   if (response.success) {
-    toast('success', 'Đã cập nhật mật khẩu snippet.');
+    showToast('success', 'Đã cập nhật mật khẩu snippet.');
     await loadData();
   } else {
     showError(response.error.error || 'Cập nhật mật khẩu thất bại', response.error.message);
@@ -454,7 +454,7 @@ const changeExpires = async (item) => {
   const response = await adminSnippetService.updateAdminSnippetExpiresAt(item.id, newExpiresAt);
 
   if (response.success) {
-    toast('success', 'Đã cập nhật thời gian hết hạn snippet.');
+    showToast('success', 'Đã cập nhật thời gian hết hạn snippet.');
     await loadData();
   } else {
     showError(response.error.error || 'Cập nhật thời gian hết hạn thất bại', response.error.message);

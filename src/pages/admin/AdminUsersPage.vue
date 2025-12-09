@@ -235,7 +235,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
 import adminUserService from '@/services/adminUserService';
-import { showError, confirmAction, toast } from '@/services/alertService';
+import { showError, confirmAction, showToast } from '@/services/alertService';
 import { formatInstant } from '@/utils/utils';
 
 const router = useRouter();
@@ -386,7 +386,7 @@ const submitUserForm = async () => {
       if (!response.success) {
         showError(response.error.error || 'Cập nhật user thất bại', response.error.message);
       } else {
-        toast('success', 'Cập nhật user thành công.');
+        showToast('success', 'Cập nhật user thành công.');
         await loadData();
       }
     } else {
@@ -402,7 +402,7 @@ const submitUserForm = async () => {
       if (!response.success) {
         showError(response.error.error || 'Tạo user thất bại', response.error.message);
       } else {
-        toast('success', 'Tạo user mới thành công.');
+        showToast('success', 'Tạo user mới thành công.');
         await loadData();
       }
     }

@@ -173,7 +173,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
 import userService from '@/services/userService';
-import { showError, toast, confirmAction, promptInput } from '@/services/alertService';
+import { showError, showToast, confirmAction, promptInput } from '@/services/alertService';
 import { formatInstant } from '@/utils/utils';
 
 const router = useRouter();
@@ -245,7 +245,7 @@ const submitChangePassword = async () => {
   });
 
   if (response.success) {
-    toast('success', 'Đổi mật khẩu thành công.');
+    showToast('success', 'Đổi mật khẩu thành công.');
     resetPasswordForm();
   } else {
     showError(response.error.error || 'Đổi mật khẩu thất bại', response.error.message);
@@ -285,7 +285,7 @@ const handleChangeEmail = async () => {
   const response = await userService.changeEmail({ newEmail });
 
   if (response.success) {
-    toast('success', 'Đổi email thành công.');
+    showToast('success', 'Đổi email thành công.');
     await loadUser();
   } else {
     showError(response.error.error || 'Đổi email thất bại', response.error.message);

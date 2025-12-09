@@ -7,7 +7,7 @@ import flatpickr from 'flatpickr';
  * @param {'success' | 'error' | 'warning' | 'info'} icon
  * @param {string} title
  */
-export const toast = (icon, title) => {
+export const showToast = (icon, title) => {
     Swal.fire({
         icon: icon,
         title: title,

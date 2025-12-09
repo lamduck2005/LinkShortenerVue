@@ -71,7 +71,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
-import { showError, showSuccess } from '@/services/alertService';
+import { showError, showSuccess, showToast } from '@/services/alertService';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
@@ -95,8 +95,29 @@ const handleSubmit = async () => {
   const response = await authService.signup(formData.value);
 
   if (response.success) {
-    showSuccess('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục.');
-    router.push('/login');
+    const userData = response.data;
+    
+    if (userData && userData.id && userData.username && userData.email) {
+      const loginResponse = await authService.login({
+        username: formData.value.username,
+        password: formData.value.password
+      });
+
+      if (loginResponse.success) {
+        const token = loginResponse.data.token;
+        console.log("🚀 ~ handleSubmit ~ token:", token)
+
+        authService.setToken(token);
+
+        showToast('success', 'Đăng ký thành công');
+        router.push('/');
+      } else {
+        router.push('/login');
+      }
+    } else {
+      showSuccess('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục.');
+      router.push('/login');
+    }
   } else {
     showError(response.error.error || 'Đăng ký thất bại', response.error.message);
   }

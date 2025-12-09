@@ -55,7 +55,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
-import { toast, confirmAction } from '@/services/alertService';
+import { showToast, confirmAction } from '@/services/alertService';
 
 const router = useRouter();
 
@@ -75,7 +75,7 @@ const handleLogout = async () => {
     return;
   }
   authService.logout();
-  toast('success', 'Đã đăng xuất');
+  showToast('success', 'Đã đăng xuất');
   router.push({name: 'login'});
 };
 </script>

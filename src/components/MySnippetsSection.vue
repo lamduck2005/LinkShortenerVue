@@ -148,7 +148,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import snippetService from '@/services/snippetService';
 import authService from '@/services/authService';
-import { showError, confirmAction, toast, promptInput, promptDateTime } from '@/services/alertService';
+import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alertService';
 import { formatInstant, copyToClipboard, isTextTooLongForPreview } from '@/utils/utils';
 
 const router = useRouter();
@@ -220,10 +220,10 @@ const handleDelete = async (item) => {
   const response = await snippetService.deleteSnippet(item.id);
 
   if (response.success && response.data == null) {
-    toast('success', 'Đã xóa link thành công.');
+    showToast('success', 'Đã xóa link thành công.');
     await loadData();
   } else if (response.success) {
-    toast('success', 'Đã xóa link thành công.');
+    showToast('success', 'Đã xóa link thành công.');
     await loadData();
   } else {
     showError(response.error.error || 'Xóa thất bại', response.error.message);
@@ -248,7 +248,7 @@ const handleChangePassword = async (item) => {
   const response = await snippetService.updateSnippetPassword(item.id, newPassword);
 
   if (response.success) {
-    toast('success', 'Đã cập nhật mật khẩu.');
+    showToast('success', 'Đã cập nhật mật khẩu.');
     await loadData();
   } else {
     showError(response.error.error || 'Cập nhật mật khẩu thất bại', response.error.message);
@@ -272,7 +272,7 @@ const handleChangeExpiresAt = async (item) => {
   const response = await snippetService.updateSnippetExpiresAt(item.id, newExpiresAt);
 
   if (response.success) {
-    toast('success', 'Đã cập nhật thời gian hết hạn.');
+    showToast('success', 'Đã cập nhật thời gian hết hạn.');
     await loadData();
   } else {
     showError(response.error.error || 'Cập nhật thời gian hết hạn thất bại', response.error.message);
