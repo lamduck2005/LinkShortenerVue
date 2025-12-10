@@ -27,11 +27,17 @@
             </div>
 
             <div class="mb-3">
-              <label for="customCode" class="form-label">Mã tùy chỉnh (Tùy chọn):</label>
+              <label for="customAlias" class="form-label">Liên kết tùy chỉnh (Tùy chọn):</label>
               <div class="input-group">
-                <!-- <span class="input-group-text">website/</span> -->
-                <input v-model="formData.customCode" type="text" id="customCode" class="form-control" minlength="6" maxlength="20"
-                  placeholder="link-rut-gon" />
+                <input
+                  v-model="formData.customAlias"
+                  type="text"
+                  id="customAlias"
+                  class="form-control"
+                  minlength="1"
+                  maxlength="100"
+                  placeholder="custom-alias"
+                />
               </div>
             </div>
 
@@ -179,21 +185,21 @@
     result.value = null;
 
     const payload = { ...formData.value };
-    if (payload.customCode === '') {
-      payload.customCode = null;
-    } else if (payload.customCode) {
-      const trimmedCode = payload.customCode.trim();
-      const customCodeRegex = /^[A-Za-z0-9_-]{6,20}$/;
-      const isValidCode = customCodeRegex.test(trimmedCode);
-      if (!isValidCode) {
+    if (payload.customAlias === '') {
+      payload.customAlias = null;
+    } else if (payload.customAlias) {
+      const trimmedAlias = payload.customAlias.trim();
+      const customAliasRegex = /^[A-Za-z0-9_-]{1,100}$/;
+      const isValidAlias = customAliasRegex.test(trimmedAlias);
+      if (!isValidAlias) {
         showError(
-          'Mã tùy chỉnh không hợp lệ',
-          'Chỉ cho phép chữ, số, dấu gạch ngang hoặc gạch dưới, độ dài 6-20, không chứa khoảng trắng.'
+          'Liên kết tùy chỉnh không hợp lệ',
+          'Chỉ cho phép chữ, số, gạch ngang hoặc dấu gạch chân, độ dài 1-100 ký tự.'
         );
         isLoading.value = false;
         return;
       }
-      payload.customCode = trimmedCode;
+      payload.customAlias = trimmedAlias;
     }
     if (payload.password === '') payload.password = null;
 
@@ -213,7 +219,7 @@
     if (response.success) {
       result.value = response.data;
 
-      formData.value.customCode = '';
+      formData.value.customAlias = '';
       formData.value.password = '';
       formData.value.expiresAt = null;
 

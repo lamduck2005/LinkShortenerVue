@@ -7,7 +7,7 @@
 export const newSnippetRequest = () => ({
     content: "",
     type: "URL", // Đặt giá trị mặc định
-    customCode: null,
+    customAlias: null,
     password: null,
     expiresAt: null
 });

@@ -22,7 +22,7 @@ export const getSnippetContent = (shortCode) => {
  * Gửi mật khẩu để mở khóa
  */
 export const unlockSnippet = (shortCode, password) => {
-    return api.post('/api/v1/unlock', { shortCode, password });
+    return api.post(`/api/v1/snippets/${shortCode}/unlock`, { password });
 };
 
 /**

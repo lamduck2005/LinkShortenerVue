@@ -5,19 +5,27 @@
         <div class="card card-body">
           <h1 class="mb-3">Giới thiệu dự án</h1>
           <p class="lead">
-            Đây là một ứng dụng rút gọn liên kết (Link Shortener) xây dựng với Vue,
-            cho phép bạn tạo các link ngắn gọn, có thể đặt mật khẩu và thiết lập thời gian hết hạn.
+            Link Shortener là một hệ thống rút gọn liên kết cho phép bạn tạo các link rút gọn với tính năng nâng cao như đặt mật khẩu, thời gian hết hạn và tạo mã QR code. Hệ thống sử dụng Spring Boot và Vue 3 để xây dựng.
           </p>
 
           <p>
-            Sau khi tạo link, bạn có thể chia sẻ cho người khác. Hệ thống sẽ tự xử lý:
+            Các chức năng chính của hệ thống:
           </p>
           <ul>
-            <li>Chuyển hướng (redirect) tới URL gốc nếu là link.</li>
-            <li>Hiển thị nội dung văn bản nếu là TEXT.</li>
-            <li>Yêu cầu mật khẩu nếu link được bảo vệ.</li>
-            <li>Thông báo khi link hết hạn hoặc không tồn tại.</li>
+            <li>Tạo liên kết hoặc văn bản rút gọn</li>
+            <li>Đặt mật khẩu cho liên kết</li>
+            <li>Thiết lập thời gian hết hạn cho liên kết</li>
+            <li>Tạo mã QR code cho liên kết</li>
+            <li>Quản lý liên kết</li>
+            <li>...</li>
           </ul>
+
+          <div>
+            <p>Liên kết tới các trang khác:</p>
+            <ul>
+              <li><a :href="`${baseUrl}/swagger-ui.html`">API Documentation</a></li>
+            </ul>
+          </div>
 
           <hr />
 
@@ -26,12 +34,12 @@
               Tạo link rút gọn mới
             </RouterLink>
             <a
-              class="btn btn-outline-secondary"
-              href="https://github.com/lamduck2005"
+              class="btn btn-secondary"
+              href="https://github.com/lamduck2005/linkshortener"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Xem GitHub của tôi
+              Mã nguồn dự án
             </a>
           </div>
         </div>
@@ -41,6 +49,7 @@
 </template>
 
 <script setup>
+const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:8080';
 </script>
 
 

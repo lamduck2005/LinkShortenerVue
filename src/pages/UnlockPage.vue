@@ -109,7 +109,11 @@ const handleUnlock = async () => {
       unlockedContent.value = content;
     }
   } else {
-    showError(response.error.error || 'Lỗi', response.error.message);
+    if(response.error.status === 'WRONG_PASSWORD') {
+      showError('Mật khẩu sai', 'Mật khẩu sai, vui lòng thử lại.');
+    } else {
+      showError(response.error.error || 'Lỗi', response.error.message);
+    }
   }
   isLoadingSubmit.value = false;
 };
