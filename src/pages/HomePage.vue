@@ -43,14 +43,11 @@
 
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu (Tùy chọn):</label>
-              <div class="input-group">
-                <input v-model="formData.password" :type="passwordFieldType" id="password" class="form-control"
-                  placeholder="Để trống nếu không cần mật khẩu" />
-                <button class="btn btn-outline-secondary" type="button" @click="togglePasswordVisibility">
-                  <EyeIcon v-if="passwordFieldType === 'password'" class="hero-icon" />
-                  <EyeSlashIcon v-else class="hero-icon" />
-                </button>
-              </div>
+              <PasswordInput
+                v-model="formData.password"
+                id="password"
+                placeholder="Để trống nếu không cần mật khẩu"
+              />
             </div>
 
             <div class="mb-3">
@@ -83,9 +80,7 @@
             <label for="resultUrl" class="form-label">Link rút gọn của bạn:</label>
             <div class="input-group mb-3">
               <input :value="result.shortUrl" id="resultUrl" class="form-control form-control-lg text-center" readonly />
-              <button class="btn btn-outline-secondary" type="button" @click="copyToClipboard(result.shortUrl)">
-                <ClipboardIcon class="hero-icon" /> Copy
-              </button>
+              <CopyButton :text="result.shortUrl" title="Copy" />
             </div>
 
             <ul class="list-group list-group-flush">
@@ -141,12 +136,11 @@
   import FlatPickr from 'vue-flatpickr-component';
 
   import {
-    EyeIcon,
-    EyeSlashIcon,
     TrashIcon,
-    ClipboardIcon,
     XMarkIcon
   } from '@heroicons/vue/24/outline';
+  import PasswordInput from '@/components/common/PasswordInput.vue';
+  import CopyButton from '@/components/common/CopyButton.vue';
 
   import { formatInstant, copyToClipboard, isTextTooLongForPreview } from '@/others/utils';
 
@@ -172,11 +166,6 @@
     time_24hr: true
   });
 
-  const passwordFieldType = ref('password');
-
-  const togglePasswordVisibility = () => {
-    passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
-  };
 
   const clearExpiresAt = () => {
     formData.value.expiresAt = null;

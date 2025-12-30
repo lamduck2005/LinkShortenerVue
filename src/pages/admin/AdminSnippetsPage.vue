@@ -52,16 +52,10 @@
         </div>
       </div>
 
-      <div v-if="isLoading" class="text-center py-4">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Đang tải...</span>
-        </div>
-      </div>
+      <LoadingSpinner v-if="isLoading" />
 
       <div v-else>
-        <div v-if="snippets.length === 0" class="alert alert-info mb-0">
-          Không có snippet nào.
-        </div>
+        <EmptyState v-if="snippets.length === 0" message="Không có snippet nào." />
 
         <div v-else class="table-responsive">
           <table class="table table-striped table-hover align-middle">
@@ -97,14 +91,12 @@
                 </td>
                 <td>{{ item.contentType }}</td>
                 <td>
-                  <span v-if="item.hasPassword" class="badge bg-warning text-dark">Có mật khẩu</span>
-                  <span v-else class="badge bg-secondary">Không mật khẩu</span>
+                  <StatusBadge type="password" :status="item.hasPassword" />
                 </td>
                 <td>{{ item.clickCount }}</td>
                 <td>{{ formatInstant(item.expiresAt) }}</td>
                 <td>
-                  <span v-if="item.isExpired" class="badge bg-danger">Đã hết hạn</span>
-                  <span v-else class="badge bg-success">Còn hiệu lực</span>
+                  <StatusBadge type="expired" :status="!item.isExpired" />
                 </td>
                 <td>
                   <div class="small">
@@ -165,188 +157,17 @@
     </div>
   </div>
 
-  <!-- Modal chi tiết snippet -->
-  <div
-    class="modal fade"
-    id="snippetDetailModal"
-    tabindex="-1"
-    aria-labelledby="snippetDetailModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content" v-if="detailSnippet">
-        <div class="modal-header">
-          <h5 class="modal-title" id="snippetDetailModalLabel">
-            Chi tiết snippet #{{ detailSnippet.id }} - {{ detailSnippet.shortCode }}
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <table class="table table-borderless align-middle mb-0">
-            <tbody>
-              <tr>
-                <th style="width: 160px;" class="text-muted fw-semibold">Short URL</th>
-                <td>
-                  <a :href="detailSnippet.shortUrl" target="_blank" rel="noopener noreferrer">
-                    {{ detailSnippet.shortUrl }}
-                  </a>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-secondary"
-                    @click="copyToClipboard(detailSnippet.shortUrl)"
-                    title="Copy Short URL"
-                  >
-                    <ClipboardIcon class="hero-icon" />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Loại</th>
-                <td>{{ detailSnippet.contentType }}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Mật khẩu</th>
-                <td>
-                  <span v-if="detailSnippet.hasPassword" class="badge bg-warning text-dark">
-                    Có mật khẩu
-                  </span>
-                  <span v-else class="badge bg-secondary">
-                    Không mật khẩu
-                  </span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Người tạo</th>
-                <td>
-                  <div><strong>{{ detailSnippet.ownerUsername }}</strong></div>
-                  <div class="text-muted">{{ detailSnippet.ownerEmail }}</div>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Ngày tạo</th>
-                <td>{{ formatInstant(detailSnippet.createdAt) }}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Hết hạn</th>
-                <td>{{ formatInstant(detailSnippet.expiresAt) }}</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Trạng thái</th>
-                <td>
-                  <span v-if="detailSnippet.isExpired" class="badge bg-danger">Đã hết hạn</span>
-                  <span v-else class="badge bg-success">Còn hiệu lực</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold">Lượt click</th>
-                <td>{{ detailSnippet.clickCount }}</td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#snippetClicksModal"
-                    @click="loadClicksDetail(detailSnippet.id)"
-                    title="Xem chi tiết clicks"
-                  >
-                    Chi tiết
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th class="text-muted fw-semibold align-top">Nội dung</th>
-                <td>
-                  <pre class="p-2 border rounded small mb-0" style="white-space:pre-wrap;">{{ detailSnippet.contentData }}</pre>
-                </td>
-                <td>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-secondary"
-                    @click="copyToClipboard(detailSnippet.contentData)"
-                    title="Copy nội dung"
-                  >
-                    <ClipboardIcon class="hero-icon" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Đóng
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <SnippetDetailModal
+    :snippet="detailSnippet"
+    :show-owner="true"
+    :show-status="true"
+    @show-clicks="handleShowClicks"
+  />
 
-  <!-- Modal chi tiết clicks -->
-  <div
-    class="modal fade"
-    id="snippetClicksModal"
-    tabindex="-1"
-    aria-labelledby="snippetClicksModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="snippetClicksModalLabel">
-            Chi tiết lượt click - Snippet #{{ detailSnippet?.id }}
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div v-if="isLoadingClicks" class="text-center py-4">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Đang tải...</span>
-            </div>
-          </div>
-          <div v-else-if="clicksDetail.length === 0" class="alert alert-info mb-0">
-            Không có lượt click nào.
-          </div>
-          <div v-else class="table-responsive">
-            <table class="table table-striped table-hover align-middle">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Thời gian click</th>
-                  <th scope="col">IP Address</th>
-                  <th scope="col">User Agent</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="click in clicksDetail" :key="click.id">
-                  <td>{{ click.id }}</td>
-                  <td>{{ formatInstant(click.clickTime) }}</td>
-                  <td>{{ click.ipAddress }}</td>
-                  <td>
-                    <span class="text-truncate d-inline-block" style="max-width: 400px;" :title="click.userAgent">
-                      {{ click.userAgent }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Đóng
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <SnippetClicksModal
+    ref="clicksModalRef"
+    :snippet-id="currentSnippetId"
+  />
 </template>
 
 <script setup>
@@ -356,9 +177,13 @@ import authService from '@/services/auth-service';
 import adminSnippetService from '@/services/admin/admin-snippet-service';
 import snippetService from '@/services/snippet-service';
 import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alert-service';
-import { formatInstant, copyToClipboard } from '@/others/utils';
-import { ClipboardIcon } from '@heroicons/vue/24/outline';
+import { formatInstant } from '@/others/utils';
 import PaginationControls from '@/components/common/PaginationControls.vue';
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
+import EmptyState from '@/components/common/EmptyState.vue';
+import SnippetDetailModal from '@/components/features/snippets/SnippetDetailModal.vue';
+import SnippetClicksModal from '@/components/features/snippets/SnippetClicksModal.vue';
+import StatusBadge from '@/components/common/StatusBadge.vue';
 
 const router = useRouter();
 
@@ -379,8 +204,8 @@ const filters = ref({
 });
 
 const detailSnippet = ref(null);
-const clicksDetail = ref([]);
-const isLoadingClicks = ref(false);
+const clicksModalRef = ref(null);
+const currentSnippetId = ref(null);
 
 const loadData = async () => {
   if (!authService.isAuthenticated.value) {
@@ -515,19 +340,8 @@ const changeExpires = async (item) => {
   }
 };
 
-const loadClicksDetail = async (id) => {
-  isLoadingClicks.value = true;
-  clicksDetail.value = [];
-  
-  const response = await snippetService.getSnippetClicks(id);
-  
-  if (response.success) {
-    clicksDetail.value = response.data || [];
-  } else {
-    showError(response.error.error || 'Lỗi', response.error.message);
-  }
-  
-  isLoadingClicks.value = false;
+const handleShowClicks = (id) => {
+  currentSnippetId.value = id;
 };
 
 onMounted(loadData);

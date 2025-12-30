@@ -20,11 +20,7 @@
       </div>
     </div>
 
-    <div v-if="isLoading" class="text-center py-4">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Đang tải...</span>
-      </div>
-    </div>
+    <LoadingSpinner v-if="isLoading" />
 
     <div v-else>
       <div class="row g-3 mb-3">
@@ -90,9 +86,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title mb-3">Top 20 liên kết có lượt truy cập nhiều nhất</h5>
-          <div v-if="!dashboard?.topSnippets || dashboard.topSnippets.length === 0" class="alert alert-info mb-0">
-            Không có dữ liệu liên kết trong khoảng này.
-          </div>
+          <EmptyState v-if="!dashboard?.topSnippets || dashboard.topSnippets.length === 0" message="Không có dữ liệu liên kết trong khoảng này." />
           <div v-else class="table-responsive">
             <table class="table table-striped table-hover align-middle">
               <thead>
@@ -126,8 +120,7 @@
                   <td>{{ formatInstant(item.createdAt) }}</td>
                   <td>{{ formatInstant(item.expiresAt) }}</td>
                   <td>
-                    <span v-if="item.isExpired" class="badge bg-danger">Đã hết hạn</span>
-                    <span v-else class="badge bg-success">Còn hiệu lực</span>
+                    <StatusBadge type="expired" :status="!item.isExpired" />
                   </td>
                 </tr>
               </tbody>
@@ -146,6 +139,9 @@ import authService from '@/services/auth-service';
 import adminDashboardService from '@/services/admin/admin-dashboard-service';
 import { showError } from '@/services/alert-service';
 import { formatInstant } from '@/others/utils';
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
+import EmptyState from '@/components/common/EmptyState.vue';
+import StatusBadge from '@/components/common/StatusBadge.vue';
 
 const router = useRouter();
 

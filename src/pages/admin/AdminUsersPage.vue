@@ -14,16 +14,10 @@
         </button>
       </div>
 
-      <div v-if="isLoading" class="text-center py-4">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Đang tải...</span>
-        </div>
-      </div>
+      <LoadingSpinner v-if="isLoading" />
 
       <div v-else>
-        <div v-if="users.length === 0" class="alert alert-info mb-0">
-          Không có người dùng nào.
-        </div>
+        <EmptyState v-if="users.length === 0" message="Không có người dùng nào." />
 
         <div v-else class="table-responsive">
           <table class="table table-striped table-hover align-middle">
@@ -201,6 +195,8 @@ import adminUserService from '@/services/admin/admin-user-service';
 import { showError, confirmAction, showToast } from '@/services/alert-service';
 import { formatInstant } from '@/others/utils';
 import PaginationControls from '@/components/common/PaginationControls.vue';
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
+import EmptyState from '@/components/common/EmptyState.vue';
 
 const router = useRouter();
 

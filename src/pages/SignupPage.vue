@@ -32,21 +32,13 @@
 
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu</label>
-              <div class="input-group">
-                <input
-                  v-model="formData.password"
-                  :type="passwordFieldType"
-                  id="password"
-                  class="form-control"
-                  required
-                  minlength="6"
-                  maxlength="100"
-                />
-                <button class="btn btn-outline-secondary" type="button" @click="togglePasswordVisibility">
-                  <EyeIcon v-if="passwordFieldType === 'password'" class="hero-icon" />
-                  <EyeSlashIcon v-else class="hero-icon" />
-                </button>
-              </div>
+              <PasswordInput
+                v-model="formData.password"
+                id="password"
+                required
+                minlength="6"
+                maxlength="100"
+              />
             </div>
 
             <button type="submit" class="btn btn-primary w-100" :disabled="isLoading">
@@ -72,7 +64,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/auth-service';
 import { showError, showSuccess, showToast } from '@/services/alert-service';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline';
+import PasswordInput from '@/components/common/PasswordInput.vue';
 
 const router = useRouter();
 
@@ -83,11 +75,6 @@ const formData = ref({
 });
 
 const isLoading = ref(false);
-const passwordFieldType = ref('password');
-
-const togglePasswordVisibility = () => {
-  passwordFieldType.value = passwordFieldType.value === 'password' ? 'text' : 'password';
-};
 
 const handleSubmit = async () => {
   isLoading.value = true;

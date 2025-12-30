@@ -36,9 +36,7 @@
             {{ unlockedContent }}
           </p>
           <div class="d-flex justify-content-between">
-            <button class="btn btn-secondary" @click="copyToClipboard(unlockedContent)">
-              <ClipboardIcon class="hero-icon" /> Sao chép
-            </button>
+            <CopyButton :text="unlockedContent" variant="secondary" title="Sao chép" />
             <RouterLink to="/" class="btn btn-primary">
               Tạo link mới
             </RouterLink>
@@ -56,8 +54,7 @@ import { useRouter } from 'vue-router';
 import snippetService from '@/services/snippet-service';
 import { showError } from '@/services/alert-service';
 import { LockClosedIcon } from '@heroicons/vue/24/outline';
-import { ClipboardIcon } from '@heroicons/vue/24/outline';
-import { copyToClipboard } from '@/others/utils';
+import CopyButton from '@/components/common/CopyButton.vue';
 
 const props = defineProps({
   shortCode: {
