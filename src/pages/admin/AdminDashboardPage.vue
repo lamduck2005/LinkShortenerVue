@@ -142,10 +142,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import adminDashboardService from '@/services/adminDashboardService';
-import { showError } from '@/services/alertService';
-import { formatInstant } from '@/utils/utils';
+import authService from '@/services/auth-service';
+import adminDashboardService from '@/services/admin/admin-dashboard-service';
+import { showError } from '@/services/alert-service';
+import { formatInstant } from '@/others/utils';
 
 const router = useRouter();
 

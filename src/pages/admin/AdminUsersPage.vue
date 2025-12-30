@@ -196,11 +196,11 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import adminUserService from '@/services/adminUserService';
-import { showError, confirmAction, showToast } from '@/services/alertService';
-import { formatInstant } from '@/utils/utils';
-import PaginationControls from '@/components/PaginationControls.vue';
+import authService from '@/services/auth-service';
+import adminUserService from '@/services/admin/admin-user-service';
+import { showError, confirmAction, showToast } from '@/services/alert-service';
+import { formatInstant } from '@/others/utils';
+import PaginationControls from '@/components/common/PaginationControls.vue';
 
 const router = useRouter();
 

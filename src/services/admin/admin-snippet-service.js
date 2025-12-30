@@ -1,4 +1,4 @@
-import api from './axiosService';
+import api from '../axios-service';
 
 export const getAdminSnippets = (params = {}) => {
   const {

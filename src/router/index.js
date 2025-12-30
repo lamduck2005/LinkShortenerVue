@@ -10,7 +10,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      component: () => import('../pages/admin/AdminLayout.vue'),
+      component: () => import('../layouts/AdminLayout.vue'),
       //childen sẽ hiện trong routerview của AdminLayout.vue
       children: [
         {

@@ -1,12 +1,6 @@
-
 import Swal from 'sweetalert2';
 import flatpickr from 'flatpickr';
 
-/**
- * Hiển thị thông báo Toast (nhỏ, góc trên bên phải)
- * @param {'success' | 'error' | 'warning' | 'info'} icon
- * @param {string} title
- */
 export const showToast = (icon, title) => {
     Swal.fire({
         icon: icon,
@@ -33,10 +27,6 @@ export const showToast = (icon, title) => {
     });
 };
 
-/**
- * @param {string} title
- * @param {string} text
- */
 export const showError = (title, text) => {
     Swal.fire({
         icon: 'error',
@@ -45,10 +35,6 @@ export const showError = (title, text) => {
     });
 };
 
-/**
- * @param {string} title
- * @param {string} text
- */
 export const showSuccess = (title, text) => {
     Swal.fire({
         icon: 'success',
@@ -57,12 +43,6 @@ export const showSuccess = (title, text) => {
     });
 };
 
-/**
- * Hiển thị hộp thoại xác nhận, trả về Promise<boolean> (true nếu người dùng xác nhận)
- * @param {string} title
- * @param {string} text
- * @returns {Promise<boolean>}
- */
 export const confirmAction = (title, text) => {
     return Swal.fire({
         title: title,
@@ -75,16 +55,6 @@ export const confirmAction = (title, text) => {
     }).then((result) => result.isConfirmed);
 };
 
-/**
- * Hiển thị ô nhập một dòng (text/password/datetime...) trả về Promise<string|null>
- * null nếu người dùng hủy.
- * @param {object} options
- *  - title: string
- *  - text: string
- *  - input: 'text' | 'password' | 'datetime-local' | ...
- *  - inputPlaceholder?: string
- *  - inputValue?: string
- */
 export const promptInput = (options) => {
     const {
         title,
@@ -114,10 +84,6 @@ export const promptInput = (options) => {
     });
 };
 
-/**
- * Prompt chọn ngày giờ bằng flatpickr bên trong SweetAlert2.
- * Trả về Promise<string | null> (chuỗi ISO theo format Z hoặc null nếu hủy).
- */
 export const promptDateTime = (options) => {
     const {
         title,

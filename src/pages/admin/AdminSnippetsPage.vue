@@ -352,13 +352,13 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import adminSnippetService from '@/services/adminSnippetService';
-import snippetService from '@/services/snippetService';
-import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alertService';
-import { formatInstant, copyToClipboard } from '@/utils/utils';
+import authService from '@/services/auth-service';
+import adminSnippetService from '@/services/admin/admin-snippet-service';
+import snippetService from '@/services/snippet-service';
+import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alert-service';
+import { formatInstant, copyToClipboard } from '@/others/utils';
 import { ClipboardIcon } from '@heroicons/vue/24/outline';
-import PaginationControls from '@/components/PaginationControls.vue';
+import PaginationControls from '@/components/common/PaginationControls.vue';
 
 const router = useRouter();
 

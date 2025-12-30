@@ -1,4 +1,4 @@
-import api from './axiosService';
+import api from '../axios-service';
 
 export const getAdminDashboard = (days) => {
   if (days && Number(days) > 0) {

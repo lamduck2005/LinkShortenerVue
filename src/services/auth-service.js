@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import api from './axiosService';
+import api from './axios-service';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
 

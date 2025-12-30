@@ -171,10 +171,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import userService from '@/services/userService';
-import { showError, showToast, confirmAction, promptInput } from '@/services/alertService';
-import { formatInstant } from '@/utils/utils';
+import authService from '@/services/auth-service';
+import userService from '@/services/user-service';
+import { showError, showToast, confirmAction, promptInput } from '@/services/alert-service';
+import { formatInstant } from '@/others/utils';
 
 const router = useRouter();
 

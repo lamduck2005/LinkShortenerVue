@@ -54,8 +54,8 @@
 <script setup>
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import { showToast, confirmAction } from '@/services/alertService';
+import authService from '@/services/auth-service';
+import { showToast, confirmAction } from '@/services/alert-service';
 
 const router = useRouter();
 

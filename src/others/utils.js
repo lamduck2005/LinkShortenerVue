@@ -1,4 +1,4 @@
-import { showToast } from '@/services/alertService';
+import { showToast } from '@/services/alert-service';
 
 const TEXT_PREVIEW_LIMIT = 300;
 

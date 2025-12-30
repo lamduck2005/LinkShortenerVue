@@ -1,4 +1,4 @@
-import api from './axiosService';
+import api from './axios-service';
 
 export const getCurrentUser = () => {
   return api.get('/api/v1/users/me');

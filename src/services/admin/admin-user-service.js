@@ -1,9 +1,5 @@
-import api from './axiosService';
+import api from '../axios-service';
 
-/**
- * Lấy danh sách user cho admin (phân trang)
- * GET /api/v1/admin/users?page=0&size=10
- */
 export const getAdminUsers = (page = 0, size = 10) => {
   return api.get(`/api/v1/admin/users?page=${page}&size=${size}`);
 };

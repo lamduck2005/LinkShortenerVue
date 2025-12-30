@@ -135,9 +135,8 @@
   <script setup>
   import { ref } from 'vue';
 
-  import { newSnippetRequest } from '@/models/snippet.model';
-  import snippetService from '@/services/snippetService';
-  import { showError, showToast } from '@/services/alertService';
+  import snippetService from '@/services/snippet-service';
+  import { showError, showToast } from '@/services/alert-service';
 
   import FlatPickr from 'vue-flatpickr-component';
 
@@ -149,12 +148,18 @@
     XMarkIcon
   } from '@heroicons/vue/24/outline';
 
-  import { formatInstant, copyToClipboard, isTextTooLongForPreview } from '@/utils/utils';
+  import { formatInstant, copyToClipboard, isTextTooLongForPreview } from '@/others/utils';
 
   const URL_MAX_LENGTH = 2048;
   const TEXT_MAX_LENGTH = 50000;
 
-  const formData = ref(newSnippetRequest());
+  const formData = ref({
+    content: "",
+    type: "URL",
+    customAlias: null,
+    password: null,
+    expiresAt: null
+  });
   const isLoading = ref(false);
   const result = ref(null);
 
@@ -178,7 +183,13 @@
   };
 
   const clearForm = () => {
-    formData.value = newSnippetRequest();
+    formData.value = {
+      content: "",
+      type: "URL",
+      customAlias: null,
+      password: null,
+      expiresAt: null
+    };
     result.value = null;
   };
 

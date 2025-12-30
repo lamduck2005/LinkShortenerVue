@@ -10,6 +10,6 @@
 </template>
 
 <script setup>
-import UserInfoCard from '@/components/UserInfoCard.vue';
-import MySnippetsSection from '@/components/MySnippetsSection.vue';
+import UserInfoCard from '@/components/features/user/UserInfoCard.vue';
+import MySnippetsSection from '@/components/features/snippets/MySnippetsSection.vue';
 </script>

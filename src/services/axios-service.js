@@ -34,7 +34,7 @@ class ErrorResponse {
 
 import router from '@/router';
 import axios from 'axios';
-import authService from './authService';
+import authService from './auth-service';
 
 const baseUrl = import.meta.env.VITE_BASE_URL || 'http://localhost:8080';
 
@@ -72,7 +72,6 @@ api.interceptors.response.use(
     });
   }
 );
-// ===================================================
 
 export default api;
 

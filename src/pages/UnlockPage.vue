@@ -53,11 +53,11 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import snippetService from '@/services/snippetService';
-import { showError } from '@/services/alertService';
+import snippetService from '@/services/snippet-service';
+import { showError } from '@/services/alert-service';
 import { LockClosedIcon } from '@heroicons/vue/24/outline';
 import { ClipboardIcon } from '@heroicons/vue/24/outline';
-import { copyToClipboard } from '@/utils/utils';
+import { copyToClipboard } from '@/others/utils';
 
 const props = defineProps({
   shortCode: {

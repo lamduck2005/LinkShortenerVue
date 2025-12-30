@@ -70,8 +70,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import authService from '@/services/authService';
-import { showError, showSuccess, showToast } from '@/services/alertService';
+import authService from '@/services/auth-service';
+import { showError, showSuccess, showToast } from '@/services/alert-service';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline';
 
 const router = useRouter();
