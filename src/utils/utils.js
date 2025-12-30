@@ -1,5 +1,6 @@
-import { TEXT_PREVIEW_LIMIT } from '@/constants'; // Import giới hạn
 import { showToast } from '@/services/alertService';
+
+const TEXT_PREVIEW_LIMIT = 300;
 
 /**
  * Chuyển đổi chuỗi ISO (Instant) sang định dạng ngày giờ địa phương (vi-VN).

@@ -53,6 +53,13 @@ export const updateSnippetExpiresAt = (id, newExpiresAt) => {
     return api.patch(`/api/v1/snippets/${id}/expires-at`, { newExpiresAt });
 };
 
+/**
+ * Lấy danh sách clicks của snippet (dùng chung cho admin và user)
+ */
+export const getSnippetClicks = (id) => {
+    return api.get(`/api/v1/snippets/${id}/clicks`);
+};
+
 const snippetService = {
     createSnippet,
     getSnippetContent,
@@ -60,7 +67,8 @@ const snippetService = {
     getMySnippets,
     deleteSnippet,
     updateSnippetPassword,
-    updateSnippetExpiresAt
+    updateSnippetExpiresAt,
+    getSnippetClicks
 };
 
 export default snippetService;

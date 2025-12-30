@@ -75,52 +75,15 @@
           </table>
         </div>
 
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
-          <div class="d-flex align-items-center gap-2">
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm"
-              :disabled="currentPage === 0 || isLoading"
-              @click="changePage(currentPage - 1)"
-            >
-              « Trang trước
-            </button>
-            <div class="input-group input-group-sm" style="max-width: 220px;">
-              <span class="input-group-text">Trang</span>
-              <input
-                v-model.number="pageInput"
-                type="number"
-                min="1"
-                class="form-control"
-                @keyup.enter="goToPage"
-                @blur="goToPage"
-              />
-              <span class="input-group-text">/ {{ totalPages || 1 }}</span>
-            </div>
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm"
-              :disabled="!hasNextPage || isLoading"
-              @click="changePage(currentPage + 1)"
-            >
-              Trang sau »
-            </button>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Đang hiển thị</span>
-            <select
-              v-model.number="pageSize"
-              class="form-select form-select-sm"
-              style="width: auto;"
-            >
-              <option :value="5">5</option>
-              <option :value="10">10</option>
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-            </select>
-            <span class="text-muted small">bản ghi mỗi trang</span>
-          </div>
-        </div>
+        <PaginationControls
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total-pages="totalPages"
+          :has-next-page="hasNextPage"
+          :is-loading="isLoading"
+          @page-change="handlePageChange"
+          @page-size-change="handlePageSizeChange"
+        />
       </div>
     </div>
   </div>
@@ -237,6 +200,7 @@ import authService from '@/services/authService';
 import adminUserService from '@/services/adminUserService';
 import { showError, confirmAction, showToast } from '@/services/alertService';
 import { formatInstant } from '@/utils/utils';
+import PaginationControls from '@/components/PaginationControls.vue';
 
 const router = useRouter();
 
@@ -247,7 +211,6 @@ const pageSize = ref(10);
 const totalPages = ref(0);
 const totalElements = ref(0);
 const hasNextPage = ref(false);
-const pageInput = ref(1);
 
 const isSubmitting = ref(false);
 const isEditMode = ref(false);
@@ -280,7 +243,6 @@ const loadData = async () => {
     totalPages.value = data.totalPages ?? 0;
     totalElements.value = data.totalElements ?? 0;
     hasNextPage.value = totalPages.value > 0 && currentPage.value + 1 < totalPages.value;
-    pageInput.value = (totalPages.value > 0 ? currentPage.value + 1 : 1);
   } else {
     showError(response.error.error || 'Lỗi', response.error.message);
   }
@@ -288,26 +250,13 @@ const loadData = async () => {
   isLoading.value = false;
 };
 
-const changePage = (page) => {
-  if (page < 0) return;
-  if (totalPages.value > 0 && page >= totalPages.value) return;
+const handlePageChange = (page) => {
   currentPage.value = page;
 };
 
-const goToPage = () => {
-  if (!pageInput.value || pageInput.value < 1) {
-    pageInput.value = currentPage.value + 1;
-    return;
-  }
-  const targetPage = pageInput.value - 1;
-  if (targetPage === currentPage.value) return;
-  if (targetPage < 0) return;
-  if (totalPages.value > 0 && targetPage >= totalPages.value) {
-    pageInput.value = totalPages.value;
-    currentPage.value = totalPages.value - 1;
-    return;
-  }
-  currentPage.value = targetPage;
+const handlePageSizeChange = (newPageSize) => {
+  pageSize.value = newPageSize;
+  currentPage.value = 0;
 };
 
 onMounted(loadData);

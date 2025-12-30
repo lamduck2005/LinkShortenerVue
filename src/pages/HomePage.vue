@@ -149,8 +149,10 @@
     XMarkIcon
   } from '@heroicons/vue/24/outline';
 
-  import { URL_MAX_LENGTH, TEXT_MAX_LENGTH } from '@/constants';
   import { formatInstant, copyToClipboard, isTextTooLongForPreview } from '@/utils/utils';
+
+  const URL_MAX_LENGTH = 2048;
+  const TEXT_MAX_LENGTH = 50000;
 
   const formData = ref(newSnippetRequest());
   const isLoading = ref(false);

@@ -85,9 +85,15 @@
                 <td>{{ item.id }}</td>
                 <td>{{ item.shortCode }}</td>
                 <td>
-                  <a :href="item.shortUrl" target="_blank" rel="noopener noreferrer">
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 text-decoration-none"
+                    data-bs-toggle="modal"
+                    data-bs-target="#snippetDetailModal"
+                    @click="loadDetail(item.id)"
+                  >
                     {{ item.shortUrl }}
-                  </a>
+                  </button>
                 </td>
                 <td>{{ item.contentType }}</td>
                 <td>
@@ -146,52 +152,15 @@
           </table>
         </div>
 
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 gap-2">
-          <div class="d-flex align-items-center gap-2">
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm"
-              :disabled="currentPage === 0 || isLoading"
-              @click="changePage(currentPage - 1)"
-            >
-              « Trang trước
-            </button>
-            <div class="input-group input-group-sm" style="max-width: 220px;">
-              <span class="input-group-text">Trang</span>
-              <input
-                v-model.number="pageInput"
-                type="number"
-                min="1"
-                class="form-control"
-                @keyup.enter="goToPage"
-                @blur="goToPage"
-              />
-              <span class="input-group-text">/ {{ totalPages || 1 }}</span>
-            </div>
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm"
-              :disabled="!hasNextPage || isLoading"
-              @click="changePage(currentPage + 1)"
-            >
-              Trang sau »
-            </button>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="text-muted small">Đang hiển thị</span>
-            <select
-              v-model.number="pageSize"
-              class="form-select form-select-sm"
-              style="width: auto;"
-            >
-              <option :value="5">5</option>
-              <option :value="10">10</option>
-              <option :value="20">20</option>
-              <option :value="50">50</option>
-            </select>
-            <span class="text-muted small">bản ghi mỗi trang</span>
-          </div>
-        </div>
+        <PaginationControls
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total-pages="totalPages"
+          :has-next-page="hasNextPage"
+          :is-loading="isLoading"
+          @page-change="handlePageChange"
+          @page-size-change="handlePageSizeChange"
+        />
       </div>
     </div>
   </div>
@@ -222,10 +191,21 @@
                     {{ detailSnippet.shortUrl }}
                   </a>
                 </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @click="copyToClipboard(detailSnippet.shortUrl)"
+                    title="Copy Short URL"
+                  >
+                    <ClipboardIcon class="hero-icon" />
+                  </button>
+                </td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Loại</th>
                 <td>{{ detailSnippet.contentType }}</td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Mật khẩu</th>
@@ -237,6 +217,7 @@
                     Không mật khẩu
                   </span>
                 </td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Người tạo</th>
@@ -244,14 +225,17 @@
                   <div><strong>{{ detailSnippet.ownerUsername }}</strong></div>
                   <div class="text-muted">{{ detailSnippet.ownerEmail }}</div>
                 </td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Ngày tạo</th>
                 <td>{{ formatInstant(detailSnippet.createdAt) }}</td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Hết hạn</th>
                 <td>{{ formatInstant(detailSnippet.expiresAt) }}</td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Trạng thái</th>
@@ -259,21 +243,101 @@
                   <span v-if="detailSnippet.isExpired" class="badge bg-danger">Đã hết hạn</span>
                   <span v-else class="badge bg-success">Còn hiệu lực</span>
                 </td>
+                <td></td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold">Lượt click</th>
                 <td>{{ detailSnippet.clickCount }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#snippetClicksModal"
+                    @click="loadClicksDetail(detailSnippet.id)"
+                    title="Xem chi tiết clicks"
+                  >
+                    Chi tiết
+                  </button>
+                </td>
               </tr>
               <tr>
                 <th class="text-muted fw-semibold align-top">Nội dung</th>
                 <td>
-                  <pre class=" p-2 border rounded small" style="white-space:pre-wrap;">
-{{ detailSnippet.contentData }}
-                  </pre>
+                  <pre class="p-2 border rounded small mb-0" style="white-space:pre-wrap;">{{ detailSnippet.contentData }}</pre>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @click="copyToClipboard(detailSnippet.contentData)"
+                    title="Copy nội dung"
+                  >
+                    <ClipboardIcon class="hero-icon" />
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Đóng
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal chi tiết clicks -->
+  <div
+    class="modal fade"
+    id="snippetClicksModal"
+    tabindex="-1"
+    aria-labelledby="snippetClicksModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="snippetClicksModalLabel">
+            Chi tiết lượt click - Snippet #{{ detailSnippet?.id }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div v-if="isLoadingClicks" class="text-center py-4">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Đang tải...</span>
+            </div>
+          </div>
+          <div v-else-if="clicksDetail.length === 0" class="alert alert-info mb-0">
+            Không có lượt click nào.
+          </div>
+          <div v-else class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Thời gian click</th>
+                  <th scope="col">IP Address</th>
+                  <th scope="col">User Agent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="click in clicksDetail" :key="click.id">
+                  <td>{{ click.id }}</td>
+                  <td>{{ formatInstant(click.clickTime) }}</td>
+                  <td>{{ click.ipAddress }}</td>
+                  <td>
+                    <span class="text-truncate d-inline-block" style="max-width: 400px;" :title="click.userAgent">
+                      {{ click.userAgent }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -290,8 +354,11 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import authService from '@/services/authService';
 import adminSnippetService from '@/services/adminSnippetService';
+import snippetService from '@/services/snippetService';
 import { showError, confirmAction, showToast, promptInput, promptDateTime } from '@/services/alertService';
-import { formatInstant } from '@/utils/utils';
+import { formatInstant, copyToClipboard } from '@/utils/utils';
+import { ClipboardIcon } from '@heroicons/vue/24/outline';
+import PaginationControls from '@/components/PaginationControls.vue';
 
 const router = useRouter();
 
@@ -303,7 +370,6 @@ const pageSize = ref(10);
 const totalPages = ref(0);
 const totalElements = ref(0);
 const hasNextPage = ref(false);
-const pageInput = ref(1);
 
 const filters = ref({
   userId: '',
@@ -313,6 +379,8 @@ const filters = ref({
 });
 
 const detailSnippet = ref(null);
+const clicksDetail = ref([]);
+const isLoadingClicks = ref(false);
 
 const loadData = async () => {
   if (!authService.isAuthenticated.value) {
@@ -342,7 +410,6 @@ const loadData = async () => {
     totalPages.value = data.totalPages ?? 0;
     totalElements.value = data.totalElements ?? 0;
     hasNextPage.value = totalPages.value > 0 && currentPage.value + 1 < totalPages.value;
-    pageInput.value = (totalPages.value > 0 ? currentPage.value + 1 : 1);
   } else {
     showError(response.error.error || 'Lỗi', response.error.message);
   }
@@ -366,26 +433,13 @@ const resetFilters = () => {
   loadData();
 };
 
-const changePage = (page) => {
-  if (page < 0) return;
-  if (totalPages.value > 0 && page >= totalPages.value) return;
+const handlePageChange = (page) => {
   currentPage.value = page;
 };
 
-const goToPage = () => {
-  if (!pageInput.value || pageInput.value < 1) {
-    pageInput.value = currentPage.value + 1;
-    return;
-  }
-  const targetPage = pageInput.value - 1;
-  if (targetPage === currentPage.value) return;
-  if (targetPage < 0) return;
-  if (totalPages.value > 0 && targetPage >= totalPages.value) {
-    pageInput.value = totalPages.value;
-    currentPage.value = totalPages.value - 1;
-    return;
-  }
-  currentPage.value = targetPage;
+const handlePageSizeChange = (newPageSize) => {
+  pageSize.value = newPageSize;
+  currentPage.value = 0;
 };
 
 const loadDetail = async (id) => {
@@ -459,6 +513,21 @@ const changeExpires = async (item) => {
   } else {
     showError(response.error.error || 'Cập nhật thời gian hết hạn thất bại', response.error.message);
   }
+};
+
+const loadClicksDetail = async (id) => {
+  isLoadingClicks.value = true;
+  clicksDetail.value = [];
+  
+  const response = await snippetService.getSnippetClicks(id);
+  
+  if (response.success) {
+    clicksDetail.value = response.data || [];
+  } else {
+    showError(response.error.error || 'Lỗi', response.error.message);
+  }
+  
+  isLoadingClicks.value = false;
 };
 
 onMounted(loadData);
