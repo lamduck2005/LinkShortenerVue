@@ -92,9 +92,9 @@ const handleSubmit = async () => {
 
       if (loginResponse.success) {
         const token = loginResponse.data.token;
-        console.log("🚀 ~ handleSubmit ~ token:", token)
+        const userInfo = loginResponse.data.userInfo;
 
-        authService.setToken(token);
+        authService.setToken(token, userInfo);
 
         showToast('success', 'Đăng ký thành công');
         router.push('/');

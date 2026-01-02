@@ -46,6 +46,12 @@ const router = createRouter({
       component: () => import('../pages/SignupPage.vue'),
     },
     {
+      path: '/oauth2/callback',
+      name: 'oauth2-callback',
+      props: true,
+      component: () => import('../pages/OAuth2CallbackPage.vue'),
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../pages/AboutPage.vue'),

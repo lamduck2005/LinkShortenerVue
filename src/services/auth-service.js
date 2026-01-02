@@ -2,15 +2,20 @@ import { ref } from 'vue';
 import api from './axios-service';
 
 const ACCESS_TOKEN_KEY = 'accessToken';
+const USER_INFO_KEY = 'userInfo';
 
 const isAuthenticated = ref(!!localStorage.getItem(ACCESS_TOKEN_KEY));
 
-const setToken = (token) => {
+const setToken = (token, userInfo = null) => {
   if (token) {
     localStorage.setItem(ACCESS_TOKEN_KEY, token);
+    if (userInfo) {
+      localStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo));
+    }
     isAuthenticated.value = true;
   } else {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
+    localStorage.removeItem(USER_INFO_KEY);
     isAuthenticated.value = false;
   }
 };
@@ -19,44 +24,37 @@ const getToken = () => {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
 };
 
-const logout = () => {
-  setToken(null);
-};
-
-const parseJwt = (token) => {
+const getUserInfo = () => {
+  const userInfoStr = localStorage.getItem(USER_INFO_KEY);
+  if (!userInfoStr) return null;
   try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
+    return JSON.parse(userInfoStr);
   } catch {
     return null;
   }
 };
 
-const getUsernameFromToken = () => {
-  const token = getToken();
-  if (!token) return null;
-  const payload = parseJwt(token);
-  if (!payload) return null;
-  return payload.sub || payload.username || null;
+const setUserInfo = (userInfo) => {
+  if (userInfo) {
+    localStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo));
+  } else {
+    localStorage.removeItem(USER_INFO_KEY);
+  }
 };
 
-const getRolesFromToken = () => {
-  const token = getToken();
-  if (!token) return [];
-  const payload = parseJwt(token);
-  if (!payload || !payload.roles) return [];
-  return Array.isArray(payload.roles) ? payload.roles : [payload.roles];
+const logout = () => {
+  setToken(null);
 };
 
 const getUsername = () => {
-  return getUsernameFromToken() || null;
+  const userInfo = getUserInfo();
+  return userInfo?.username || null;
+};
+
+const getRolesFromToken = () => {
+  const userInfo = getUserInfo();
+  if (!userInfo || !userInfo.roles) return [];
+  return Array.isArray(userInfo.roles) ? userInfo.roles : [userInfo.roles];
 };
 
 const isAdmin = () => {
@@ -72,17 +70,32 @@ const login = (payload) => {
   return api.post('/api/v1/auth/login', payload);
 };
 
+const getOAuth2GoogleUrl = () => {
+  return import.meta.env.VITE_BASE_URL + '/oauth2/authorization/google';
+};
+
+const getOAuth2GoogleUserinfo = () => {
+  return api.get('/api/v1/auth/oauth2/userinfo',
+    {
+      withCredentials: true,
+    }
+  );
+};
+
 const authService = {
   signup,
   login,
   logout,
   setToken,
   getToken,
-  getUsernameFromToken,
+  getUserInfo,
+  setUserInfo,
   getRolesFromToken,
   getUsername,
   isAdmin,
   isAuthenticated,
+  getOAuth2GoogleUrl,
+  getOAuth2GoogleUserinfo,
 };
 
 export default authService;

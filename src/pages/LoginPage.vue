@@ -42,8 +42,16 @@
           </form>
 
           <hr />
+          <button class="btn btn-light w-100" @click="handleGoogleLogin">
+            Hoặc đăng nhập bằng 
+            <b>
+              <img src="https://img.icons8.com/?size=24&id=17949&format=png&color=000000" alt="">
+              <span class="ms-2">Google</span>
+            </b>
+          </button>
+          
 
-          <p class="text-center mb-0">
+          <p class="text-center mb-0 mt-3">
             Chưa có tài khoản?
             <RouterLink to="/signup">Đăng ký ngay</RouterLink>
           </p>
@@ -76,8 +84,9 @@ const handleSubmit = async () => {
 
   if (response.success) {
     const token = response.data.token;
+    const userInfo = response.data.userInfo;
 
-    authService.setToken(token);
+    authService.setToken(token, userInfo);
     showToast('success', 'Đăng nhập thành công!');
 
     if (authService.isAdmin()) {
@@ -95,6 +104,10 @@ const handleSubmit = async () => {
 const fillDefaultAccount = (accountType) => {
   formData.value.username = accountType === 'admin' ? 'admin' : 'user';
   formData.value.password = '123456';
+};
+
+const handleGoogleLogin = () => {
+  window.location.href = authService.getOAuth2GoogleUrl();
 };
 </script>
 
