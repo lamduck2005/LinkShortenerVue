@@ -7,7 +7,6 @@ import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 
-const failed = route.query.failed;
 
 const handleFailed = () => {
     showToast('error', 'Đăng nhập thất bại, vui lòng thử lại.');
@@ -25,6 +24,7 @@ const handleSuccess = () => {
 }
 
 onMounted(() => {
+    const failed = route.query.failed;
     if (failed) {
         handleFailed();
         return;
